@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+	var gListDatas;
+	var num = 11;
+
+	// url 에서 parameter 추출
+	function getParam(sname) {
+	    var params = location.search.substr(location.search.indexOf("?") + 1);
+	    var sval = "";
+	    params = params.split("&");
+	    for (var i = 0; i < params.length; i++) {
+	        temp = params[i].split("=");
+	        if ([temp[0]] == sname) { sval = temp[1]; }
+	    }
+	    return sval;
+	}
+
+	function ajxtCallA() {
+		num = getParam("noticeid");
+		console.log(getParam("noticeid"));
+		$.ajax({
+			url: "https://jsonplaceholder.typicode.com/photos/"+num,
+			type: "GET",
+			data: {},
+		  	success: function(result) {
+			    $("#resultShowDiv").html(JSON.stringify(result));	//textarea(id:resultShowDiv)에 result값 출력
+			  	gListDatas = result;
+				$("#resultShowTable").html("<tr><th>ID</th><th>title</th><th>thumbnail</th></tr>");
+				$("#resultShowTable").append(
+		    			"<tr><td>" + gListDatas.id + "</td><td>" + gListDatas.title +
+		    			"</td><td><img width='70' height='70' src='" + gListDatas.thumbnailUrl + "'></td></tr>");
+
+		    	// for (var i = 0; i < gListDatas.length; i++) {
+		    	// 	$("#resultShowTable").append(
+		    	// 		"<tr><td>" + gListDatas[i].id + "</td><td>" + gListDatas[i].title +
+		    	// 		"</td><td><img onclick=\"goUrl('" + gListDatas[i].url + "')\" width='100' height='100' src='" + gListDatas[i].thumbnailUrl + "'></td></tr>");
+		    	// }
+			}
+		});
+	}
+	
+	//img url
+	function goUrl(str){
+		location.href =str;
+	}
+
+</script>
+</head>
+
+<body onload="ajxtCallA()">
+	<br><br>
+	&nbsp
+	<br><br>
+	&nbsp첫번째<br>
+	<textarea id="resultShowDiv" rows="5" cols="100"></textarea>
+	<br><br>
+	&nbsp두번째<br>
+	<!-- done : <div id="ajaxDoneText" > </div><br>
+	fail : <div id="ajaxFailText" > </div><br>
+	always : <div id="ajaxAlwaysText" > </div><br> -->
+
+	<table id="resultShowTable" border="1">
+		<tr>
+			<td>
+				
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
