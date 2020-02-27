@@ -8,29 +8,41 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
-	var gListDatas = [];
+	var gListDatas;
+	var tableRow;
+
+	// url 에서 parameter 추출
+	function getParam(sname) {
+	    var params = location.search.substr(location.search.indexOf("?") + 1);
+	    var sval = "";
+	    params = params.split("&");
+	    for (var i = 0; i < params.length; i++) {
+	        temp = params[i].split("=");
+	        if ([temp[0]] == sname) { sval = temp[1]; }
+	    }
+	    return sval;
+	}
+
 	function ajxtCallA() {
+		tableRow = getParam("noticeid");
+		console.log(getParam("noticeid"));
 		$.ajax({
-			url: "http://jsonplaceholder.typicode.com/photos",
+			url: "http://jsonplaceholder.typicode.com/posts/"+tableRow,
 			type: "GET",
 			data: {},
 		  	success: function(result) {
-			    $("#resultShowDiv").html(JSON.stringify(result));	//textarea(id:resultShowDiv)에 result값 출력
-
 			  	gListDatas = result;
-				$("#resultShowTable").html("<tr><th>ID</th><th>title</th><th>thumbnail</th></tr>");
-		    	for (var i = 0; i < gListDatas.length; i++) {
-		    		$("#resultShowTable").append(
-		    			"<tr><td>" + gListDatas[i].id + "</td><td>" + gListDatas[i].title +
-		    			"</td><td><img onclick=\"goUrl('" + gListDatas[i].id + "')\" width='100' height='100' src='" + gListDatas[i].thumbnailUrl + "'></td></tr>");
-		    	}
+				$("#cID").html(gListDatas.id);
+				$("#cUserId").html(gListDatas.userId);
+				$("#cTitle").html(gListDatas.title);
+				$("#cContents").html(gListDatas.body);
 			}
 		});
 	}
-
+	
 	//img url
 	function goUrl(str){
-		location.href ="ajax-test-2-1.html?noticeid="+str;
+		location.href =str;
 	}
 
 </script>
@@ -38,19 +50,37 @@
 
 <body onload="ajxtCallA()">
 	<br><br>
-	&nbsp<input type="button" id="infoTableAddRowBtn" value="데이터 가져오기" onclick="ajxtCallA()">
-	<br><br>
-	&nbsp첫번째<br>
-	<textarea id="resultShowDiv" rows="5" cols="100"></textarea>
-	<br><br>
-	&nbsp두번째<br>
-	<!-- done : <div id="ajaxDoneText" > </div><br>
-	fail : <div id="ajaxFailText" > </div><br>
-	always : <div id="ajaxAlwaysText" > </div><br> -->
-
-	<table id="resultShowTable" border="1">
+	<h2>Contents</h2>
+	<table id="contentsShowTable" border="1">
 		<tr>
 			<td>
+				ID
+			</td>
+			<td id="cID">
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				user_id
+			</td>
+			<td id="cUserId">
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				title
+			</td>
+			<td id="cTitle">
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				contents
+			</td>
+			<td id="cContents">
 				
 			</td>
 		</tr>
