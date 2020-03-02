@@ -6,6 +6,7 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 	<script>
@@ -20,30 +21,42 @@
 					$("#listShowTable").html("<tr><th>선택</th><th>ID</th><th>user_id</th><th>title</th></tr>");
 			    	for (var i = 0; i < gListDatas.length; i++) {
 			    		$("#listShowTable").append(
-			    			"<tr><td><input type='checkbox' id='rowSelect'></td><td>" + gListDatas[i].id + "</td><td>" + gListDatas[i].userId + 
+			    			"<tr><td><input type='checkbox' name='rowSelect'></td><td>" + gListDatas[i].id + "</td><td>" + gListDatas[i].userId + 
 			    			"</td><td style='cursor:pointer;' onclick='goContents(" + gListDatas[i].id + ")'>" + gListDatas[i].title + "</td></tr>");
 			    	}
 				}
 			});
 		}
-		
+	</script>
+
+	<script>
 		//title row 선택시 ajax-test-3-1.html file로 이동
 		function goContents(str){
 			location.href ="ajax-test-3-1.html?noticeid="+str;
 		}
+	</script>
 
+	<script>
+		//checkbox 클릭하면 색상 변환
+		// function highlight(obj){
+		// 	$(obj).parent().parent().css("background-color", "yellow");
+		// }
+ 
 		//색상변경 버튼
-		// $(document).ready(function(){
-		// 	$("#rowColorChange").click(function(){
-		// 		$('input:checkbox[id="rowSelect"]').each(function(){
-		// 			this.checked = true;
-		// 				if(this.checked){
-							
-		// 				}
-		// 		})
-				
-		// 	});
-		// });
+		$(document).ready(function(){
+			$("#rowColorChange").click(function(){
+				$("input[name=rowSelect]:checked").parent().parent().addClass("yellow")
+			});
+		});
+	</script>
+
+	<script>
+		//삭제 버튼
+		$(document).ready(function(){
+			$("#rowRemove").click(function(){
+				$("input[name=rowSelect]:checked").parent().parent().remove()
+			});
+		});
 	</script>
 
 	<style>
@@ -51,7 +64,7 @@
 		  font-weight: bold;
 		}
 		.yellow {
-		  background-color: : yellow;
+		  background-color: yellow;
 		}
 	</style>
 </head>
@@ -59,7 +72,7 @@
 <body onload="ajxtCallA()" style="margin:50px">
 	<h2>List</h2><br>
 	<input type="button" id="rowColorChange" value="색상변경">
-	<input type="button" id="rowRemove" value="삭제" onclick="selectRemove()">
+	<input type="button" id="rowRemove" value="삭제">
 	<br><br>
 	<table id="listShowTable" border="1">
 		
